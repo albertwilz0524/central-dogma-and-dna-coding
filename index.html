@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central Dogma & DNA Directionality: High School Edition</title>
+  <style>
+    /* =========================================
+       PURE BLACK & WHITE MINIMALIST THEME
+       ========================================= */
+    :root {
+      --bg: #ffffff;
+      --fg: #000000;
+      --border-thick: 3px solid #000000;
+      --border-thin: 1px solid #000000;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Top Progress Bar */
+    header {
+      border-bottom: var(--border-thick);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: 1px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    .slide-counter {
+      font-family: monospace;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Main Slide Presentation Window */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .slide-container {
+      width: 100%;
+      max-width: 900px;
+      border: var(--border-thick);
+      padding: 40px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--bg);
+    }
+
+    /* Typography & Visuals */
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .analogy-box {
+      border: var(--border-thin);
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 1rem;
+    }
+
+    .diagram {
+      font-family: "Courier New", Courier, monospace;
+      white-space: pre-wrap;
+      border: var(--border-thick);
+      background: #ffffff;
+      padding: 16px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin: 14px 0;
+      font-weight: 700;
+      overflow-x: auto;
+    }
+
+    .highlight {
+      background: var(--fg);
+      color: var(--bg);
+      padding: 2px 6px;
+      font-weight: 700;
+    }
+
+    /* Comparison Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      border: var(--border-thin);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--fg);
+      color: var(--bg);
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Quiz Styling */
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .option-btn {
+      background: var(--bg);
+      color: var(--fg);
+      border: var(--border-thin);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 1.05rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: none;
+    }
+
+    .option-btn:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .option-btn.selected-correct {
+      background: var(--fg);
+      color: var(--bg);
+      outline: 4px solid var(--fg);
+    }
+
+    .option-btn.selected-wrong {
+      text-decoration: line-through;
+    }
+
+    .quiz-feedback {
+      border: var(--border-thin);
+      padding: 12px 16px;
+      font-weight: 600;
+      display: none;
+      margin-top: 10px;
+    }
+
+    /* Bottom Control Bar */
+    footer {
+      border-top: var(--border-thick);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+    }
+
+    button.nav-btn {
+      background: var(--fg);
+      color: var(--bg);
+      border: var(--border-thick);
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button.nav-btn:hover {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    button.nav-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      border-color: #000;
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      font-family: monospace;
+      color: var(--fg);
+    }
+
+    @media (max-width: 650px) {
+      .slide-container {
+        padding: 20px;
+        min-height: auto;
+      }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.2rem; }
+      p, li { font-size: 0.95rem; }
+      .diagram { font-size: 0.75rem; }
+      .hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">High School Biology — Lesson Deck</div>
+    <div class="slide-counter" id="slideIndicator">Slide 1 of 20</div>
+  </header>
+
+  <!-- Slide Canvas -->
+  <main>
+    <div class="slide-container" id="slideContent">
+      <!-- Slides dynamically rendered here -->
+    </div>
+  </main>
+
+  <!-- Navigation Footer -->
+  <footer>
+    <div class="hint">[Use ← and → arrow keys or buttons to navigate]</div>
+    <div class="controls">
+      <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Back</button>
+      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+  </footer>
+
+  <script>
+    /* =======================================================
+       SLIDE CONTENT DATABASE
+       ======================================================= */
+    const slides = [
+      /* SLIDE 1 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h1>The Central Dogma & Directionality</h1>
+            <p><strong>A Beginner's Guide to DNA Coding: 5'-to-3' vs. 3'-to-5'</strong></p>
+            <div class="analogy-box">
+              <strong>Big Question:</strong> Why do textbooks always write weird numbers like <code>5'</code> and <code>3'</code> next to DNA strands? What does it actually mean when a cell builds a protein?
+            </div>
+            <p>In this lesson, you will learn:</p>
+            <ul>
+              <li>The 3 core steps of the Central Dogma (DNA → RNA → Protein).</li>
+              <li>What <strong>5'</strong> and <strong>3'</strong> mean chemically.</li>
+              <li>Why DNA strands run like two-way traffic lanes (Antiparallel).</li>
+              <li>The difference between the <strong>Coding</strong> and <strong>Template</strong> strands.</li>
+            </ul>
+          </div>
+          <p style="font-size: 0.9rem;">Press <strong>Next →</strong> to begin.</p>
+        `
+      },
+
+      /* SLIDE 2 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>1. The Big Picture: Central Dogma</h2>
+            <p>Think of your cell as a busy restaurant kitchen:</p>
+            <div class="diagram">
+[DNA]           Master Cookbook locked inside the Office (Nucleus)
+  │
+  ▼ Transcription (Copying one recipe onto a notepad)
+[mRNA]          Mobile recipe card carried to the kitchen
+  │
+  ▼ Translation (Chef gathers ingredients to cook)
+[PROTEIN]       The finished, edible dish (Enzyme, Muscle, Hair, etc.)
+            </div>
+            <ul>
+              <li><strong>DNA (Deoxyribonucleic Acid):</strong> Stores all instructions permanently.</li>
+              <li><strong>mRNA (Messenger RNA):</strong> A temporary copy of just <em>one</em> gene.</li>
+              <li><strong>Protein:</strong> The physical worker molecule that keeps you alive.</li>
+            </ul>
+          </div>
+        `
+      },
+
+      /* SLIDE 3 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>2. The Genetic Alphabet & Codons</h2>
+            <p>DNA uses 4 chemical bases: <strong>A, T, C, G</strong>.</p>
+            <p>The cell reads these letters in groups of <strong>three</strong>, known as a <span class="highlight">CODON</span> (or triplet):</p>
+            <div class="diagram">
+DNA Base Triplet :  [ A - T - G ]   [ G - C - C ]   [ T - A - A ]
+                          │               │               │
+mRNA Codon       :  [ A - U - G ]   [ G - C - C ]   [ U - A - A ]
+                          │               │               │
+Amino Acid       :  [Methionine]     [Alanine]        [STOP!]
+            </div>
+            <ul>
+              <li><strong>RNA swaps T for U:</strong> RNA never has Thymine (T); it uses <strong>Uracil (U)</strong> instead.</li>
+              <li><strong>AUG:</strong> The universal "START" codon.</li>
+              <li><strong>Stop Codons:</strong> Tells the ribosome to finish the protein.</li>
+            </ul>
+          </div>
+        `
+      },
+
+      /* SLIDE 4 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>3. What on Earth are 5' and 3'?</h2>
+            <p>The numbers <strong>5' (five-prime)</strong> and <strong>3' (three-prime)</strong> refer to carbon atoms on the sugar ring of each nucleotide brick:</p>
+            <div class="diagram">
+     5' End  ===>  [ PHOSPHATE GROUP ]
+                         │
+                    [ 5-Carbon Sugar ]
+                         │
+     3' End  ===>  [ -OH HYDROXYL GROUP ] (The "Hook")
+            </div>
+            <div class="analogy-box">
+              <strong>The Lego Analogy:</strong>
+              Imagine Lego bricks that have pegs only on top (3') and a flat bottom (5'). You can only stick a new Lego brick onto the peg!
+            </div>
+            <p><strong>The Golden Rule:</strong> Cellular enzymes can <em>only</em> attach new nucleotides to the free <strong>3' end</strong>. They can never stick one to the 5' end!</p>
+          </div>
+        `
+      },
+
+      /* SLIDE 5 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>4. Antiparallel: A Two-Lane Highway</h2>
+            <p>DNA is double-stranded. But the two strands do not face the same way—they are <span class="highlight">ANTIPARALLEL</span> (they run in opposite directions):</p>
+            <div class="diagram">
+Strand 1 (Forward):   5' ─── A ─── T ─── G ─── C ─── 3'  (Head to Tail)
+                             │     │     │     │
+Strand 2 (Reverse):   3' ─── T ─── A ─── C ─── G ─── 5'  (Tail to Head)
+            </div>
+            <ul>
+              <li><strong>Base-Pairing Rule:</strong> A pairs with T (or U in RNA), and C pairs with G.</li>
+              <li>If the top strand runs <strong>5' → 3'</strong>, the bottom partner strand <em>must</em> run <strong>3' → 5'</strong>.</li>
+              <li>They fit together like two puzzle pieces oriented upside-down relative to each other.</li>
+            </ul>
+          </div>
+        `
+      },
+
+      /* SLIDE 6 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>5. The Two Strands: Coding vs. Template</h2>
+            <p>When a gene is transcribed into mRNA, the two DNA strands play completely different roles:</p>
+            <div class="diagram">
+Coding Strand (Sense):      5' ── A T G   G C A   T A A ── 3'
+                                  │ │ │   │ │ │   │ │ │
+Template Strand (Antisense): 3' ── T A C   C G T   A T T ── 5'
+            </div>
+            <ul>
+              <li><strong>Template Strand (3' → 5'):</strong> The physical mold that RNA Polymerase actually grabs and reads.</li>
+              <li><strong>Coding Strand (5' → 3'):</strong> The idle strand. However, because of complementary matching, it carries the <em>exact same letter sequence</em> as the resulting mRNA (with T instead of U)!</li>
+            </ul>
+          </div>
+        `
+      },
+
+      /* SLIDE 7 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>6. The Universal Rule of Reading & Writing</h2>
+            <p>This is where high school students often get tripped up. Memorize these two simple rules:</p>
+            <div class="analogy-box">
+              <p><strong>RULE 1 (READING):</strong> Enzymes READ the DNA template in the <strong>3' → 5'</strong> direction.</p>
+              <p><strong>RULE 2 (BUILDING):</strong> Enzymes BUILD the new strand in the <strong>5' → 3'</strong> direction.</p>
+            </div>
+            <div class="diagram">
+Template being READ   :  3' ════════════════════════════> 5'
+                                    │ │ │ │ │
+New RNA being BUILT   :  5' ════════════════════════════> 3'
+            </div>
+            <p>Because the new RNA must be antiparallel to the template, reading <strong>3'→5'</strong> automatically forces the new RNA to grow <strong>5'→3'</strong>!</p>
+          </div>
+        `
+      },
+
+      /* SLIDE 8 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>7. The Full Sequence Walkthrough</h2>
+            <p>Let's follow one complete message through every step of life:</p>
+            <div class="diagram">
+1. Coding DNA      :  5' ── ATG   GCA   TAA ── 3'
+                             │││   │││   │││
+2. Template DNA    :  3' ── TAC   CGT   ATT ── 5'
+                             │││   │││   │││  (RNA Poly reads 3'->5')
+3. mRNA transcript :  5' ── AUG   GCA   UAA ── 3'  (Built 5'->3')
+                             │││   │││
+4. tRNA anticodons :  3' ── UAC   CGU ── 5'        (Pairs antiparallel)
+                             │     │
+5. Amino Acids     :      [Met]─[Ala]─[STOP]
+            </div>
+            <p>Notice: mRNA looks <strong>identical</strong> to Coding DNA, except Thymine (T) is replaced by Uracil (U)!</p>
+          </div>
+        `
+      },
+
+      /* SLIDE 9 */
+      {
+        type: "lesson",
+        render: () => `
+          <div>
+            <h2>8. Directionality Quick Cheat Sheet</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Molecule / Strand</th>
+                  <th>Direction</th>
+                  <th>What it does</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Coding DNA Strand</strong></td>
+                  <td>5' → 3'</td>
+                  <td>Matches mRNA letters (bystander)</td>
+                </tr>
+                <tr>
+                  <td><strong>Template DNA Strand</strong></td>
+                  <td>3' → 5'</td>
+                  <td>Physical mold read by RNA polymerase</td>
+                </tr>
+                <tr>
+                  <td><strong>mRNA Transcript</strong></td>
+                  <td>5' → 3'</td>
+                  <td>Carries codons to the ribosome</td>
+                </tr>
+                <tr>
+                  <td><strong>tRNA Anticodons</strong></td>
+                  <td>3' → 5'</td>
+                  <td>Matches codons to drop off amino acids</td>
+                </tr>
+                <tr>
+                  <td><strong>Protein Synthesis</strong></td>
+                  <td>N-term → C-term</td>
+                  <td>Built starting from amino to carboxyl end</td>
+                </tr>
+              </tbody>
+            </table>
+            <p><strong>Next Up:</strong> A 10-question quiz to test what you have learned!</p>
+          </div>
+        `
+      },
+
+      /* SLIDE 10: QUIZ Q1 */
+      {
+        type: "quiz",
+        qIndex: 0,
+        question: "Q1. What is the fundamental flow of genetic information described by the Central Dogma?",
+        options: [
+          "Protein → RNA → DNA",
+          "DNA → RNA → Protein",
+          "RNA → DNA → Protein",
+          "DNA → Protein → RNA"
+        ],
+        correct: 1,
+        explanation: "The Central Dogma states that DNA is transcribed into mRNA, which is then translated into Protein."
+      },
+
+      /* SLIDE 11: QUIZ Q2 */
+      {
+        type: "quiz",
+        qIndex: 1,
+        question: "Q2. What do the numbers 5' (five-prime) and 3' (three-prime) chemically refer to?",
+        options: [
+          "The number of hydrogen bonds between base pairs",
+          "The number of amino acids in the protein",
+          "The specific numbered carbon atoms on the sugar ring",
+          "The number of mutations discovered in the gene"
+        ],
+        correct: 2,
+        explanation: "The 5' and 3' labels designate the 5th and 3rd carbon positions on the deoxyribose or ribose sugar ring."
+      },
+
+      /* SLIDE 12: QUIZ Q3 */
+      {
+        type: "quiz",
+        qIndex: 2,
+        question: "Q3. What functional group is attached to the 5' end of a nucleic acid chain?",
+        options: [
+          "Phosphate group",
+          "Hydroxyl group (-OH)",
+          "Amino group (-NH2)",
+          "Carboxyl group (-COOH)"
+        ],
+        correct: 0,
+        explanation: "The 5' end features a free phosphate group, while the 3' end features a free hydroxyl (-OH) group."
+      },
+
+      /* SLIDE 13: QUIZ Q4 */
+      {
+        type: "quiz",
+        qIndex: 3,
+        question: "Q4. In what direction do polymerases (DNA and RNA) ALWAYS build/synthesize new strands?",
+        options: [
+          "3' to 5'",
+          "5' to 3'",
+          "Either direction randomly",
+          "From both ends toward the middle"
+        ],
+        correct: 1,
+        explanation: "Enzymes can only attach incoming nucleotides to the free 3'-OH group, meaning new strands are strictly synthesized 5' to 3'."
+      },
+
+      /* SLIDE 14: QUIZ Q5 */
+      {
+        type: "quiz",
+        qIndex: 4,
+        question: "Q5. In what direction does RNA Polymerase READ the template DNA strand?",
+        options: [
+          "3' to 5'",
+          "5' to 3'",
+          "From N-terminus to C-terminus",
+          "From 5' to 5'"
+        ],
+        correct: 0,
+        explanation: "Because nucleic acid pairing is antiparallel, to synthesize RNA in the 5'→3' direction, the enzyme must read the template 3'→5'."
+      },
+
+      /* SLIDE 15: QUIZ Q6 */
+      {
+        type: "quiz",
+        qIndex: 5,
+        question: "Q6. If the DNA Template strand reads 3'-TAC-5', what will the resulting mRNA codon be?",
+        options: [
+          "5'-TAC-3'",
+          "3'-AUG-5'",
+          "5'-AUG-3'",
+          "5'-UAC-3'"
+        ],
+        correct: 2,
+        explanation: "T pairs with A, A pairs with U (in RNA), and C pairs with G. The synthesized mRNA is antiparallel: 5'-AUG-3'."
+      },
+
+      /* SLIDE 16: QUIZ Q7 */
+      {
+        type: "quiz",
+        qIndex: 6,
+        question: "Q7. Why is the 5' to 3' DNA strand called the 'Coding Strand' if it isn't directly read by RNA polymerase?",
+        options: [
+          "Because it has the exact same sequence as mRNA (except U instead of T)",
+          "Because it is directly translated into amino acids by ribosomes",
+          "Because it destroys unwanted RNA transcripts",
+          "Because it encodes transfer RNA only"
+        ],
+        correct: 0,
+        explanation: "Because the coding strand is complementary to the template just like mRNA is, the mRNA sequence is identical to the coding strand (with U replacing T)."
+      },
+
+      /* SLIDE 17: QUIZ Q8 */
+      {
+        type: "quiz",
+        qIndex: 7,
+        question: "Q8. Double-stranded DNA is 'antiparallel'. What does this term mean?",
+        options: [
+          "The strands cross each other in an X-shape",
+          "The strands run side-by-side but in opposite chemical directions (5'→3' vs 3'→5')",
+          "One strand is made of protein while the other is DNA",
+          "The two strands repel each other and never bond"
+        ],
+        correct: 1,
+        explanation: "Antiparallel means the two strands run parallel to each other but with opposite polarities: 5' to 3' beside 3' to 5'."
+      },
+
+      /* SLIDE 18: QUIZ Q9 */
+      {
+        type: "quiz",
+        qIndex: 8,
+        question: "Q9. During translation, how does a tRNA anticodon align with an mRNA codon?",
+        options: [
+          "Parallel (5' to 5')",
+          "Antiparallel (3' to 5' anticodon pairs with 5' to 3' codon)",
+          "It does not require complementary base pairing",
+          "Only in the 3' to 3' orientation"
+        ],
+        correct: 1,
+        explanation: "Like all nucleic acid interactions, the tRNA anticodon binds antiparallel to the mRNA codon (3'→5' binds to 5'→3')."
+      },
+
+      /* SLIDE 19: QUIZ Q10 */
+      {
+        type: "quiz",
+        qIndex: 9,
+        question: "Q10. What nitrogenous base replaces Thymine (T) in RNA molecules?",
+        options: [
+          "Cytosine (C)",
+          "Guanine (G)",
+          "Uracil (U)",
+          "Adenine (A)"
+        ],
+        correct: 2,
+        explanation: "RNA contains Uracil (U) instead of Thymine (T). Uracil pairs with Adenine (A)."
+      },
+
+      /* SLIDE 20: SCORE & RECAP */
+      {
+        type: "summary",
+        render: () => {
+          let score = userAnswers.filter((ans, idx) => ans === slides[9 + idx].correct).length;
+          let percent = Math.round((score / 10) * 100);
+          return `
+            <div>
+              <h1>Quiz Completed!</h1>
+              <h2>Your Score: ${score} / 10 (${percent}%)</h2>
+              <div class="analogy-box">
+                ${score >= 8 
+                  ? "<strong>Outstanding!</strong> You have completely mastered DNA directionality and the Central Dogma!" 
+                  : score >= 5 
+                    ? "<strong>Good effort!</strong> You understand the basics, but review the 5' vs 3' rules to sharpen your skills." 
+                    : "<strong>Keep practicing!</strong> Click 'Restart Deck' to review the reading/building rules and try again."}
+              </div>
+              <h3>Key Reminders for Exams:</h3>
+              <ul>
+                <li>Polymerases <strong>read 3' → 5'</strong> and <strong>build 5' → 3'</strong>.</li>
+                <li><strong>Coding strand</strong> = 5' to 3' (matches mRNA).</li>
+                <li><strong>Template strand</strong> = 3' to 5' (read by enzyme).</li>
+                <li><strong>mRNA</strong> = 5' to 3' (read by ribosome).</li>
+              </ul>
+              <div style="margin-top: 20px;">
+                <button class="nav-btn" onclick="restartDeck()">↺ Restart Presentation</button>
+              </div>
+            </div>
+          `;
+        }
+      }
+    ];
+
+    /* =======================================================
+       STATE MANAGEMENT & NAVIGATION
+       ======================================================= */
+    let currentSlide = 0;
+    let userAnswers = new Array(10).fill(null);
+
+    function updateView() {
+      const slide = slides[currentSlide];
+      const container = document.getElementById("slideContent");
+      const indicator = document.getElementById("slideIndicator");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      // Update counter
+      indicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+
+      // Handle Buttons
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+
+      // Render slide type
+      if (slide.type === "lesson" || slide.type === "summary") {
+        container.innerHTML = slide.render();
+      } else if (slide.type === "quiz") {
+        renderQuizSlide(slide, container);
+      }
+    }
+
+    function renderQuizSlide(slide, container) {
+      const qNum = slide.qIndex + 1;
+      const selected = userAnswers[slide.qIndex];
+
+      let optionsHTML = slide.options.map((opt, i) => {
+        let extraClass = "";
+        if (selected !== null) {
+          if (i === slide.correct) extraClass = "selected-correct";
+          else if (selected === i) extraClass = "selected-wrong";
+        }
+        return `
+          <button class="option-btn ${extraClass}" onclick="selectAnswer(${slide.qIndex}, ${i})">
+            ${String.fromCharCode(65 + i)}) ${opt}
+          </button>
+        `;
+      }).join("");
+
+      let feedbackHTML = "";
+      if (selected !== null) {
+        let isCorrect = selected === slide.correct;
+        feedbackHTML = `
+          <div class="quiz-feedback" style="display: block;">
+            <strong>${isCorrect ? "✓ CORRECT!" : "✗ INCORRECT."}</strong> ${slide.explanation}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div>
+          <h2>Check Your Understanding (Question ${qNum} of 10)</h2>
+          <p style="font-size: 1.2rem; font-weight: 700;">${slide.question}</p>
+          <div class="quiz-options">
+            ${optionsHTML}
+          </div>
+          ${feedbackHTML}
+        </div>
+        <p style="font-size: 0.85rem; font-family: monospace;">Select an option above to check your answer, then click Next →</p>
+      `;
+    }
+
+    function selectAnswer(qIndex, choiceIndex) {
+      userAnswers[qIndex] = choiceIndex;
+      updateView();
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateView();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateView();
+      }
+    }
+
+    function restartDeck() {
+      userAnswers = new Array(10).fill(null);
+      currentSlide = 0;
+      updateView();
+    }
+
+    // Keyboard navigation
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        nextSlide();
+      } else if (e.key === "ArrowLeft") {
+        prevSlide();
+      }
+    });
+
+    // Initialize presentation on load
+    updateView();
+  </script>
+</body>
+</html>
